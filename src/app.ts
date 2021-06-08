@@ -6,14 +6,14 @@ import {expressJwtSecret} from "jwks-rsa"
 
 config();
 
-if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
-    throw new Error('Please provide AUTH0_DOMAIN and AUTH0_AUDIENCE in .env file')
+if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE || !process.env.ORIGIN) {
+    throw new Error('Please provide AUTH0_DOMAIN, AUTH0_AUDIENCE and ORIGIN in .env file')
 }
 
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3000'
+    origin: process.env.ORIGIN
 };
 
 app.use(cors(corsOptions));
@@ -33,13 +33,13 @@ const checkJwt = jwt({
 app.get('/api/public', (req: Request, res: Response) => {
     res.json({
         message: 'This is a public endpoint'
-    })
+    });
 });
 
 app.get('/api/private', checkJwt, (req: Request, res: Response) => {
     res.json({
         message: 'This is a private endpoint'
-    })
+    });
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
