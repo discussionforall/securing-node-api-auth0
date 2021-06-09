@@ -23,10 +23,10 @@ const checkJwt = jwt({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: `${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+        jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
     }),
-    audience: process.env.AUTH0_DOMAIN,
-    issuer: [process.env.AUTH0_DOMAIN],
+    audience: process.env.AUTH0_AUDIENCE,
+    issuer: `https://${process.env.AUTH0_DOMAIN}/`,
     algorithms: ['RS256']
 });
 
